@@ -30,6 +30,7 @@ const isLoggedIn = async (req, res, next) => {
   } catch (error) {
     return next(new AppError("Unable to verify user, please log in again", 401));
   }
+
 };
 
 const authorizedRoles =
