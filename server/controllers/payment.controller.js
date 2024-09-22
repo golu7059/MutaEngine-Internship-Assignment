@@ -2,7 +2,7 @@ import "dotenv/config";
 import Paymnet from "../models/payment.model.js";
 import User from "../models/user.model.js";
 import AppError from "../utils/error.util.js";
-import { razorpay } from "../server.js";
+import { razorpay } from "../index.js";
 import crypto from 'crypto'
 
 const getRazorpayApiKey = (req, res, next) => {
