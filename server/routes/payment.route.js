@@ -13,6 +13,9 @@ router.route('/subscribe').post(isLoggedIn, buySubscription);
 // verify subscription
 router.route('/verify').post(isLoggedIn, verifySubsription);
 
+// generate bill
+router.route('/generateBill').post(isLoggedIn,generateBill);
+
 // cancel subscription
 router.route('/unsubscribe').post(isLoggedIn, cancelSubscription);
 

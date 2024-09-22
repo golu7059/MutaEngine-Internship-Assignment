@@ -77,6 +77,38 @@ const verifySubsription = async (req, res, next) => {
     }
 }
 
+const generateBill = async (req, res, next) => {
+    const { id } = req.user;
+    const user = await User.findById(id);
+    if (!user) {
+        return next(new AppError("User doen't exist !", 400));
+    }
+    if (user.role == "ADMIN") {
+        return next(new AppError("Admin has no need to Purchase subscription !", 400));
+    }
+
+    const payment = await Paymnet.findOne({ razorpaysubscription_id: user.subscription.id });
+    if (!payment) {
+        return next(new AppError("Payment not done ! Please try Again", 400));
+    }
+    const options = {
+        amount: user.subscription.amount * 100,
+        currency: "INR",
+        receipt: payment.razorpay_payment_id
+    }
+
+    try {
+        const response = await razorpay.orders.create(options)
+        res.status(200).json({
+            success: true,
+            message: "Bill Generated Successfully",
+            response
+        })
+    } catch (error) {
+        return next(new AppError(`${error.message}`, 400))
+    }
+}
+
 const cancelSubscription = async (req, res, next) => {
     try {
         const { id } = req.user;
